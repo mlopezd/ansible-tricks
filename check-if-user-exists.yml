@@ -1,0 +1,16 @@
+- name: Check if user exists
+  hosts: localhost
+  vars:
+    username: ansible
+  tasks:
+    - name: Get all users
+      getent:
+        database: passwd
+    - name: User exists
+      debug:
+        msg: "User exists"
+      when: username in ansible_facts.getent_passwd.keys()
+    - name: User does not exist
+      debug:
+        msg: "User does no exist"
+      when: username not in ansible_facts.getent_passwd.keys()
